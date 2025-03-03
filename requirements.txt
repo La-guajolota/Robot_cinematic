@@ -8,7 +8,4 @@ numpy
 # Matplotlib for 2D plotting (if needed)
 matplotlib
 
-# Plotly for 3D visualization
-plotly
-
-PyQt5
+#PyQt5
