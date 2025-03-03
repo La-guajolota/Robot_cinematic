@@ -11,3 +11,4 @@ matplotlib
 # Plotly for 3D visualization
 plotly
 
+PyQt5
