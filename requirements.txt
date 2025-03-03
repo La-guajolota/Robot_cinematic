@@ -1,0 +1,11 @@
+# Streamlit for building the GUI
+streamlit
+
+# NumPy for numerical operations
+numpy
+
+# Matplotlib for 2D plotting (if needed)
+matplotlib
+
+# Plotly for 3D visualization
+plotly
