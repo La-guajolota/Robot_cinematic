@@ -8,4 +8,4 @@ numpy
 # Matplotlib for 2D plotting (if needed)
 matplotlib
 
-#PyQt5
+PyQt5
