@@ -1,5 +1,5 @@
-import matplotlib
-matplotlib.use('Qt5Agg')
+#import matplotlib
+#matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 #import obj_joints_links as jll
