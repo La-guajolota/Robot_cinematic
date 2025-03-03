@@ -11,21 +11,21 @@ class Joint:
         self.axis = eje  # default
 
         # Create the homogeneous rotation matrix
-        if self.axis == 'ro':
+        if self.axis == 'theta':
             self.rotation_matrix = np.array([
             [np.cos(self.angle_rad), -np.sin(self.angle_rad), 0, 0],
             [np.sin(self.angle_rad), np.cos(self.angle_rad), 0, 0],
             [0, 0, 1, 0],
             [0, 0, 0, 1]
             ])  
-        elif self.axis == 'theta':  
+        elif self.axis == 'phi':  
             self.rotation_matrix = np.array([
             [1, 0, 0, 0],
             [0, np.cos(self.angle_rad), -np.sin(self.angle_rad), 0],
             [0, np.sin(self.angle_rad), np.cos(self.angle_rad), 0],
             [0, 0, 0, 1]
             ])
-        elif self.axis == 'phi':
+        elif self.axis == 'ro':
             self.rotation_matrix = np.array([
             [np.cos(self.angle_rad), 0, np.sin(self.angle_rad), 0],
             [0, 1, 0, 0],
