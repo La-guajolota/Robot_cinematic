@@ -36,10 +36,10 @@ with st.container():
         with st.expander("Configuración de juntas"):
             for i in range(num_joints):
                 st.markdown(f"**Junta {i}**")
-                #CAMPTURAMOS LOS ÁNGULOS
-                theta = st.number_input(f"Ángulo theta del eslabón {i}", min_value=-360.0, max_value=360.0, value=0.0)
-                phi = st.number_input(f"Ángulo phi del eslabón {i}", min_value=-360.0, max_value=360.0, value=0.0)
-                ro = st.number_input(f"Ángulo ro del eslabón {i}", min_value=-360., max_value=360.0, value=0.0)
+                #CAMPTURAMOS LOS ÁNGULOS  (los dignos menos PARA REVISAR)
+                theta = -st.number_input(f"Ángulo theta del eslabón {i}", min_value=-360.0, max_value=360.0, value=0.0)
+                phi = -st.number_input(f"Ángulo phi del eslabón {i}", min_value=-360.0, max_value=360.0, value=0.0)
+                ro = -st.number_input(f"Ángulo ro del eslabón {i}", min_value=-360., max_value=360.0, value=0.0)
                 
                 # CAPTURAMOS EL DESPLAZAMIENTO DE ACUERDO A LA LONGITUD DE LOS ESLABONES    
                 # Operamos sobre las matrices para conocer los movimientos y posiciones correspondientes
@@ -48,12 +48,12 @@ with st.container():
                     T_rslt = joints_list[0]  
                 else : 
                     # punto3 = punto1 + vector_unitario * longitud_total    !VECTORES!
-                    Vunit_x, _, _= T_rslt.unit_vect()
+                    Vunit_x, _, _= joints_list[i-1].unit_vect()
                     x, y, z = Vunit_x + Vunit_x * links_list[i-1]
                     
                     next_mov = j.Eslabon(phi, ro, theta, x, y, z) # nueva rotación y traslación
 
-                    T_rslt = T_rslt @ next_mov # rotamos y nos trasladamos
+                    T_rslt = next_mov @ T_rslt  # rotamos y nos trasladamos  ! checar orden de multiplicado
                     joints_list.append(T_rslt)
                 st.markdown("---")
 
@@ -86,12 +86,12 @@ with st.container():
         x_values = [point[0] for point in points]
         y_values = [point[1] for point in points]
         z_values = [point[2] for point in points]
-        ax.plot(x_values, y_values, z_values, color='black', marker='*', markerfacecolor='black')
+        ax.plot(x_values, y_values, z_values, color='black', marker='o', markersize=5, markerfacecolor='black')
 
         # Configura los límites de los ejes
-        ax.set_xlim([-8, 8])
-        ax.set_ylim([8, -8])
-        ax.set_zlim([0, 8])
+        ax.set_xlim([-5, 5])
+        ax.set_ylim([5, -5])
+        ax.set_zlim([0, 5])
         # Etiquetas de los ejes
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
