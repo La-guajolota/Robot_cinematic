@@ -1,3 +1,14 @@
+"""
+Simulación de Movimiento de Robots
+
+Este script utiliza Streamlit para crear una interfaz gráfica que permite la configuración y visualización
+de la animación de robots en movimiento. Los usuarios pueden ingresar el número de juntas y eslabones, así
+como sus respectivas rotaciones y longitudes, para ver cómo se desplaza el robot en un espacio tridimensional.
+
+Autor: Adrián Silva Palafox
+Fecha: 11 Marzo 2025
+"""
+
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,11 +28,12 @@ with st.container():
 
     with left_column:
         st.header("Simulación de movimiento de robots 🤖")
-        st.write("En esta aplicación puedes visualizar la animación de robots en movimiento ingresado número de juntas, eslabones, y su respectivas rotaciones y longitudes.")
+        st.write("En esta aplicación puedes visualizar la animación de robots en movimiento ingresando el número de juntas, eslabones, y sus respectivas rotaciones y longitudes.")
 
     with middle_column:
         st.subheader("Configuración de Eslabones y Juntas")
 
+        # Configuración de eslabones
         num_links = st.number_input("Número de eslabones", min_value=2, max_value=10, value=2)
         links_list = []
         with st.expander("Configuración de eslabones"):
@@ -31,29 +43,27 @@ with st.container():
                 links_list.append(length)
                 st.markdown("---")
 
+        # Configuración de juntas
         num_joints = num_links + 1
         joints_list = []
         with st.expander("Configuración de juntas"):
             for i in range(num_joints):
                 st.markdown(f"**Junta {i}**")
-                #CAMPTURAMOS LOS ÁNGULOS  (los dignos menos PARA REVISAR)
                 theta = -st.number_input(f"Ángulo theta del eslabón {i}", min_value=-360.0, max_value=360.0, value=0.0)
                 phi = -st.number_input(f"Ángulo phi del eslabón {i}", min_value=-360.0, max_value=360.0, value=0.0)
                 ro = -st.number_input(f"Ángulo ro del eslabón {i}", min_value=-360., max_value=360.0, value=0.0)
                 
-                # CAPTURAMOS EL DESPLAZAMIENTO DE ACUERDO A LA LONGITUD DE LOS ESLABONES    
-                # Operamos sobre las matrices para conocer los movimientos y posiciones correspondientes
-                if i == 0: # Eslabón 0
+                # Capturamos el desplazamiento de acuerdo a la longitud de los eslabones
+                if i == 0:  # Eslabón 0
                     joints_list.append(j.Eslabon(phi, ro, theta))
                     T_rslt = joints_list[0]  
-                else : 
-                    # punto3 = punto1 + vector_unitario * longitud_total    !VECTORES!
-                    Vunit_x, _, _= joints_list[i-1].unit_vect()
+                else:
+                    # Calculamos el desplazamiento utilizando vectores unitarios
+                    Vunit_x, _, _ = joints_list[i-1].unit_vect()
                     x, y, z = Vunit_x + Vunit_x * links_list[i-1]
                     
-                    next_mov = j.Eslabon(phi, ro, theta, x, y, z) # nueva rotación y traslación
-
-                    T_rslt = next_mov @ T_rslt  # rotamos y nos trasladamos  ! checar orden de multiplicado
+                    next_mov = j.Eslabon(phi, ro, theta, x, y, z)  # Nueva rotación y traslación
+                    T_rslt = next_mov @ T_rslt  # Rotamos y nos trasladamos
                     joints_list.append(T_rslt)
                 st.markdown("---")
 
@@ -64,7 +74,7 @@ with st.container():
             for i in range(num_joints):
                 st.write(joints_list[i])
 
-        # GRAFICAMOS EL ROBOT
+        # Graficamos el robot
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
 
@@ -73,7 +83,7 @@ with st.container():
             # Obtiene los vectores unitarios y la posición del frame
             Xvect, Yvect, Zvect = eslabon.unit_vect()
             frame_ptn = eslabon.frame_position()
-            points.append(frame_ptn) # Almacenamos las posiciones
+            points.append(frame_ptn)  # Almacenamos las posiciones
             print(f"{eslabon} - Frame position:", frame_ptn)
 
             # Grafica los vectores unitarios
