@@ -98,6 +98,10 @@ with st.container():
         z_values = [point[2] for point in points]
         ax.plot(x_values, y_values, z_values, color='black', marker='o', markersize=5, markerfacecolor='black')
 
+        # Imprime el último punto
+        if points:
+            st.write(f"Último punto: {points[-1]}")
+
         # Configura los límites de los ejes
         ax.set_xlim([-5, 5])
         ax.set_ylim([5, -5])
@@ -107,4 +111,4 @@ with st.container():
         ax.set_ylabel('Y')
         ax.set_zlabel('Z')
         # Muestra la gráfica en Streamlit
-        st.pyplot(fig)
+        st.pyplot(fig) 
